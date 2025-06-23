@@ -1,1 +1,3 @@
 # ai-text-completion-project
+
+Hello, and welcome to my submission for the AI text completion project for Cognizant's AI Externship program. For set-up, the python script provided used OpenAI's GPT-4o-mini model to be able to provide responses to users when running the script. The script relies on an API key that each user will need to get for themselves, and will end up replacing the "API_KEY_HERE" string that is present within the OpenAI function. The API Key that I used is on a free trial, so limited use is available to everyone when using the python script. To run the script, just run the program in the terminal and follow the instructions given.
