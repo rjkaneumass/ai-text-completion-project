@@ -1,0 +1,79 @@
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="API_KEY_HERE"
+)
+
+print("Welcome to the AI Text Completion App using OpenAI's GPT-4o-mini model!")
+print("Type 'exit' to quit the application at any time.")
+print("If you would like to edit the temperature, make your input in the format: 'temperature: <value>'. Temperature must be between 0 and 2.")
+print("If you would like to edit the top_p parameter, make your input in the format: 'top_p: <value>'. Top_p must be between 0 and 1.")
+print("If you would like to edit the max_tokens parameter, make your input in the format: 'max_tokens: <value>'. Max tokens must be between 1 and 4096.")
+
+while True:
+    #Receive user input for the prompt
+    prompt = input("Please enter your prompt: ")
+
+    if prompt.lower() == 'exit':
+        break
+    
+    if prompt.strip() == "":
+        print("Prompt cannot be empty. Please try again.")
+        continue
+
+    if prompt.lower().startswith("temperature:"):
+        try:
+            # Extract the temperature value from the input
+            temp_value = float(prompt.split(":")[1].strip())
+            if 0 <= temp_value <= 2:
+                print(f"Temperature set to {temp_value}.")
+                continue
+            else:
+                print("Temperature must be between 0 and 2. Please try again.")
+                continue
+        except (ValueError, IndexError):
+            print("Invalid temperature format. Please use 'temperature: <value>' format.")
+            continue
+    
+    if prompt.lower().startswith("top_p:"):
+        try:
+            # Extract the top_p value from the input
+            top_p_value = float(prompt.split(":")[1].strip())
+            if 0 <= top_p_value <= 1:
+                print(f"Top_p set to {top_p_value}.")
+                continue
+            else:
+                print("Top_p must be between 0 and 1. Please try again.")
+                continue
+        except (ValueError, IndexError):
+            print("Invalid top_p format. Please use 'top_p: <value>' format.")
+            continue
+    
+    if prompt.lower().startswith("max_tokens:"):
+        try:
+            # Extract the max_tokens value from the input
+            max_tokens_value = int(prompt.split(":")[1].strip())
+            if 1 <= max_tokens_value <= 4096:
+                print(f"Max tokens set to {max_tokens_value}.")
+                continue
+            else:
+                print("Max tokens must be between 1 and 4096. Please try again.")
+                continue
+        except (ValueError, IndexError):
+            print("Invalid max_tokens format. Please use 'max_tokens: <value>' format.")
+            continue
+
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        store=True,
+        temperature=temp_value if 'temp_value' in locals() else 0.7,
+        top_p=top_p_value if 'top_p_value' in locals() else 0.3,
+        max_tokens=max_tokens_value if 'max_tokens_value' in locals() else 150,
+        messages=[
+            {"role": "user", "content": prompt}
+        ]
+    )
+
+    print(completion.choices[0].message.content.strip())
+
+print("Thank you for using the AI Text Completion App! Goodbye!")
